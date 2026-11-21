@@ -20,3 +20,8 @@ INSERT INTO artefact VALUES ('Approved vocabulary', 1);
 -- The Stage 3 introduction and hierarchy exercise describe this use.
 INSERT INTO uses_artefact VALUES
     (3, 'Approved vocabulary', 'https://jesstalisman-ia.github.io/ontology-pipeline/');
+
+-- Studio, stage 2 defines the profile. Stage 3 describes its role in taxonomy design.
+INSERT INTO artefact VALUES ('Metadata application profile', 2);
+INSERT INTO uses_artefact VALUES
+    (3, 'Metadata application profile', 'https://jesstalisman-ia.github.io/ontology-pipeline/');
