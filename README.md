@@ -23,6 +23,14 @@ The vocabulary supplies concepts to arrange. The metadata application profile de
 
 **Try to break the claim.** Keep both earlier stages and both artefacts. Remove only the link recording Taxonomy’s use of the profile. The [inputs query](taxonomy-inputs.sql) should now return only the vocabulary. This tests whether the answer actually depends on the recorded use.
 
+## Experiment 3 · Where do Taxonomy’s concepts come from?
+
+The previous query lists two inputs. A modeller choosing terms for the hierarchy needs a narrower answer. In our reading of stage 3, the approved vocabulary supplies the concepts and the metadata application profile guides the structure. These role labels are our interpretation. [Source: Ontology Pipeline Studio, stage 3](https://jesstalisman-ia.github.io/ontology-pipeline/)
+
+We record a role on a particular use of an artefact. This lets the same artefact serve a different purpose elsewhere. The [concept-source query](taxonomy-concept-sources.sql) returns **Approved vocabulary**.
+
+**Counterexample.** In the test database, deliberately assign the concept-supplying role to the profile. The list of inputs stays the same, while the answer to the new question changes to **Metadata application profile**. That deliberately wrong attribution tests whether the query follows the role, even when the artefact’s name suggests a different answer.
+
 ## Run the experiments
 
 From this directory, using Python 3:

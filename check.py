@@ -26,8 +26,29 @@ with sqlite3.connect(":memory:") as db:
         print(f"{case}: {', '.join(name for _, name in actual)}")
 
     check_inputs("Recorded taxonomy inputs", [vocabulary, profile])
+    db.execute("SAVEPOINT remove_profile")
     db.execute(
         "DELETE FROM uses_artefact WHERE stage_position = 3 AND artefact_name = ?",
         (profile[1],),
     )
     check_inputs("Profile use removed", [vocabulary])
+    db.execute("ROLLBACK TO remove_profile")
+    db.execute("RELEASE remove_profile")
+
+    concept_query = (root / "taxonomy-concept-sources.sql").read_text()
+
+    def check_concept_source(case, expected_name):
+        actual = db.execute(concept_query).fetchall()
+        if actual != [(expected_name,)]:
+            raise SystemExit(f"{case}: expected {expected_name}, got {actual}")
+        print(f"{case}: {expected_name}")
+
+    check_concept_source("Recorded concept source", vocabulary[1])
+    # Deliberately misattribute the role while retaining both input links.
+    db.execute(
+        "UPDATE use_role SET artefact_name = ? "
+        "WHERE stage_position = 3 AND artefact_name = ? AND role = 'supplies concepts'",
+        (profile[1], vocabulary[1]),
+    )
+    check_inputs("Same inputs after role reassignment", [vocabulary, profile])
+    check_concept_source("Hypothetical concept source", profile[1])

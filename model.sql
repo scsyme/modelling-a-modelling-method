@@ -25,3 +25,17 @@ INSERT INTO uses_artefact VALUES
 INSERT INTO artefact VALUES ('Metadata application profile', 2);
 INSERT INTO uses_artefact VALUES
     (3, 'Metadata application profile', 'https://jesstalisman-ia.github.io/ontology-pipeline/');
+
+-- A use can be recorded before its role is known, and can serve several roles.
+CREATE TABLE use_role (
+    stage_position INTEGER NOT NULL,
+    artefact_name TEXT NOT NULL,
+    role TEXT NOT NULL,
+    PRIMARY KEY (stage_position, artefact_name, role),
+    FOREIGN KEY (stage_position, artefact_name)
+        REFERENCES uses_artefact(stage_position, artefact_name) ON DELETE CASCADE
+);
+-- Our interpretation of the Stage 3 introduction, sourced on each use above.
+INSERT INTO use_role VALUES
+    (3, 'Approved vocabulary', 'supplies concepts'),
+    (3, 'Metadata application profile', 'guides structure');
